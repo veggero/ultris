@@ -1,0 +1,12 @@
+Script started on 2022-06-27 23:05:41+02:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+minimax depth=1 move=ge v=60 t=0.000s(0.000s) m/ms=191.483 visited=70 cuts=0
+minimax depth=2 move=ge v=48 t=0.000s(0.001s) m/ms=262.292 visited=210 cuts=68
+minimax depth=3 move=ge v=57 t=0.003s(0.004s) m/ms=253.384 visited=930 cuts=134
+minimax depth=4 move=ge v=48 t=0.008s(0.013s) m/ms=273.833 visited=2393 cuts=724
+minimax depth=5 move=ge v=57 t=0.041s(0.055s) m/ms=254.755 visited=10600 cuts=1380
+minimax depth=6 move=ge v=48 t=0.102s(0.157s) m/ms=276.351 visited=28290 cuts=8627
+minimax depth=7 move=ge v=57 t=0.558s(0.715s) m/ms=241.418 visited=134712 cuts=13453
+minimax depth=8 move=ge v=47 t=0.990s(1.706s) m/ms=269.202 visited=266580 cuts=78434
+move=ge
+
+Script done on 2022-06-27 23:05:45+02:00 [COMMAND_EXIT_CODE="0"]
