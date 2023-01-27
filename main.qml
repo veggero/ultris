@@ -175,7 +175,7 @@ ApplicationWindow {
                                 leftMargin: 8
                                 rightMargin: 8
                             }
-                            source: "x.png"
+                            source: "assets/x.png"
                             mipmap: true
                             visible: here == 'X'
                         }
@@ -188,7 +188,7 @@ ApplicationWindow {
                                 leftMargin: 8
                                 rightMargin: 8
                             }
-                            source: "o.png"
+                            source: "assets/o.png"
                             mipmap: true
                             visible: here == 'O'
                         }

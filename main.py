@@ -1,15 +1,31 @@
 from __future__ import annotations
-from PySide2.QtGui import QGuiApplication
-from PySide2.QtQml import QQmlApplicationEngine, QQmlDebuggingEnabler
-from PySide2.QtCore import QObject, Slot, Signal, Property
 from subprocess import PIPE,Popen
 from multiprocessing import Process
 from dataclasses import dataclass, field
 from typing import Optional
 from time import sleep
+import argparse
 import threading, signal, io, sys, os
 
-ULTIMATTT = "/home/niccolove/Downloads/ultimattt/target/release/ultimattt"
+try:
+    from PySide2.QtGui import QGuiApplication
+    from PySide2.QtQml import QQmlApplicationEngine, QQmlDebuggingEnabler
+    from PySide2.QtCore import QObject, Slot, Signal, Property
+except ModuleNotFoundError:
+    print('This program requires PySide2 to run!')
+    exit()
+
+
+if 'ULTIMATTT_PATH' in os.environ:
+    ULTIMATTT = os.environ['ULTIMATTT_PATH']
+else:
+    print('This program relies on ultimattt, which you can find here:')
+    print('https://github.com/nelhage/ultimattt')
+    print('When you have installed and compiled that project, please '
+          'run this script with the environment variable ULTIMATTT_PATH '
+          'set to the path of the ultimattt executable, usually in '
+          'ultimattt/target/release/ultimattt.')
+    exit()
 
 wins = ('1  1  1  ', ' 1  1  1 ', '  1  1  1', '111      ',
         '   111   ', '      111', '1   1   1', '  1 1 1  ')
@@ -71,7 +87,6 @@ class Position(QObject):
             self.depth, self.best_move, val = int(depth[6:]), move[5:], float(val[2:])
             val = max(-100, min(100, val))
             if self.depth > 8: self.evaluation = (val+prev_val)/2 * self.turn
-            print(val, prev_val, self.turn, self.evaluation)
             prev_val = val
             self.eval_changed.emit()
             if self.depth >= 30: return
@@ -158,7 +173,6 @@ class Match(QObject):
             x, _, y = move.partition('/')
             x, y = t.index(x), t.index(y)
             self.add_move(x, y)
-            print(move)
         self.new_position(self.root)
 
     @Slot(int, int)
@@ -206,11 +220,13 @@ class Match(QObject):
 
 m = Match()
 
-m.load_hero('  C/C C/NW NW/NW NW/C C/N N/NE NE/NE NE/W W/W W/S S/S S/E E/E E/S S/N N/N N/NW NW/E E/W W/SE SE/SE SE/SW SW/SW SW/SE SE/E E/C C/S S/C SE/NE NE/SW SW/NE NE/NW NW/W W/SW SW/S')
+if len(sys.argv) > 1: m.load_hero(sys.argv[1])
 
 app = QGuiApplication(sys.argv)
-qml = QQmlApplicationEngine('main.qml')
-#qml.rootContext().setContextProperty("videoPath", filename)
+try:
+    qml = QQmlApplicationEngine('main.qml')
+except Exception as e:
+    print('Please run the script in the root folder, along main.qml')
 qml.rootContext().setContextProperty("py", m)
 app.exec_()
 m.root.stop_eval()
